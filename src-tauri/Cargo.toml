@@ -1,0 +1,33 @@
+[package]
+name = "tidydrive"
+version = "0.1.0"
+description = "Privacy-focused Storage Manager"
+authors = ["TidyDrive"]
+edition = "2021"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tauri = { version = "1.5", features = ["shell-open"] }
+tokio = { version = "1", features = ["full"] }
+sha2 = "0.10"
+walkdir = "2"
+
+[target.'cfg(windows)'.dependencies]
+winapi = { version = "0.3", features = ["fileapi", "winnt", "handleapi"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+cocoa = "0.25"
+objc = "0.2"
+
+[[custom_protocol]]
+scheme = "tidydrive"
+security = { csp = "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'" }
+
+[build-dependencies]
+tauri-build = "1.5"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
